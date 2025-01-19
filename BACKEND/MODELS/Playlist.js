@@ -29,6 +29,6 @@ const Playlist = new mongoose.Schema({
     ]
 });
 
-const PlaylistModelModel = mongoose.model("", User)
+const PlaylistModel = mongoose.model("", Playlist)
 
 module.exports = PlaylistModel;

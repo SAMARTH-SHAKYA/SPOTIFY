@@ -1,14 +1,14 @@
 const express = require("express");
+const { default: mongoose } = require("mongoose");
 const JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
-const passport = require('passport');
-const User=require('./MODELS/User')
-const authroutes=require('./routes/auth');
-const { default: mongoose } = require("mongoose");
+const passport = require("passport");
 const app = express();
+const authRoutes = require("./ROUTES/auth");
+const User = require("./MODELS/User");
+const songRoutes = require("./MODELS/Song")
 require("dotenv").config();
 const port = process.env.PORT || 3000;
-
 app.use(express.json());
 
 console.log(process.env);
@@ -24,21 +24,19 @@ mongoose.connect(process.env.MONGO_URL)
     .catch((err) => {
         console.error("Error while connecting to MongoDB:", err);
     });
+// setup passprot jwt
 
-    //setup passport-jwt
-    
 
 let opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = 'ThiskeyisSecretOrPrivate';
-
+opts.secretOrKey = "thisKeyisSupposedToBeSecret";
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-    User.findOne({id: jwt_payload.sub}, function(err, user) {
+    User.findOne({id: jwt_payload.sub}, function(err, User) {
         if (err) {
             return done(err, false);
         }
-        if (user) {
-            return done(null, user);
+        if (User) {
+            return done(null, User);
         } else {
             return done(null, false);
             // or you could create a new account
@@ -46,13 +44,13 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
     });
 }));
 
-    
 
 
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
-app.use('/auth',authroutes);
+app.use("/auth" , authRoutes);
+app.use("/song" , songRoutes);
 
 
 app.listen(port, () => {

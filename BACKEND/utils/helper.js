@@ -1,8 +1,8 @@
 const jwt=require('jsonwebtoken');
 exports={}
 
-exports.getToken=async (email,user)=>{
-        const token=jwt.sign({identifier: user._id},"ThiskeyisSecretOrPrivate");
+exports.getToken=async (email,User)=>{
+        const token=jwt.sign({identifier: User._id},"ThiskeyisSecretOrPrivate");
         return token;
 };
 
