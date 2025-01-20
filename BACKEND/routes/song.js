@@ -16,8 +16,9 @@ router.post("/create" , passport.authenticate("jwt" , {session:false}),async (re
     return res.status(200).json(createdSong);
 }); 
 
+
 // get all songs that i have publish
-router.get("/get/mysongs"  , passport.authenticate("jwt", {session:false}),async (res , req)=>{
+router.get("/get/mysongs"  , passport.authenticate("jwt", {session:false}),async (req , res)=>{
     const currentUser = req.user;
     // need to get all songs where artist id == currentUser._id
     const songs = await Song.find({artist: req.user._id});

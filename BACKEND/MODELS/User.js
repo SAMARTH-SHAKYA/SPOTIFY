@@ -19,6 +19,10 @@ const User = new mongoose.Schema({
         type: String,
         required: true,
     },
+    password:{
+        type: String,
+        required: true,
+    },
     likedsongs:{
         //we will change this to array later
         type: String,

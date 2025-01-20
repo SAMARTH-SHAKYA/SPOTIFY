@@ -1,14 +1,15 @@
 const express = require("express");
 const { default: mongoose } = require("mongoose");
-const JwtStrategy = require('passport-jwt').Strategy,
-    ExtractJwt = require('passport-jwt').ExtractJwt;
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const passport = require("passport");
 const app = express();
 const authRoutes = require("./ROUTES/auth");
 const User = require("./MODELS/User");
-const songRoutes = require("./MODELS/Song")
+const Song=require("./MODELS/Song");
+const songRoutes = require("./routes/song");
 require("dotenv").config();
-const port = process.env.PORT || 3000;
+const port =process.env.PORT || 3000;
 app.use(express.json());
 
 console.log(process.env);
@@ -49,6 +50,7 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
+
 app.use("/auth" , authRoutes);
 app.use("/song" , songRoutes);
 
